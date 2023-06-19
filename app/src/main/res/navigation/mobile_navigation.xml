@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="jt.projects.gbmovecar.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:name="jt.projects.gbmovecar.ui.motionlayout.MotionLayoutFragment"
+        android:label="MotionLayout"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

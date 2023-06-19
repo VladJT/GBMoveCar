@@ -27,7 +27,7 @@ class ConstraintSetFragment : Fragment() {
         .addTransition(
             ChangeBounds()
                 .apply {
-                    duration = 1000L
+                    duration = ANIMATION_DURATION
                     setPathMotion(ArcMotion())
                     interpolator = AnticipateOvershootInterpolator(1.0f)
                 }
