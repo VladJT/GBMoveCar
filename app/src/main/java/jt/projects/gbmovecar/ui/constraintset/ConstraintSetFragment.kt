@@ -1,14 +1,16 @@
 package jt.projects.gbmovecar.ui.constraintset
 
 import android.os.Bundle
-import android.transition.ChangeBounds
-import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnticipateOvershootInterpolator
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
+import androidx.transition.ArcMotion
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import jt.projects.gbmovecar.R
 import jt.projects.gbmovecar.databinding.FragmentCarStartBinding
 
@@ -20,6 +22,16 @@ class ConstraintSetFragment : Fragment() {
     companion object {
         const val ANIMATION_DURATION = 1000L
     }
+
+    private val transitionSet = TransitionSet()
+        .addTransition(
+            ChangeBounds()
+                .apply {
+                    duration = 1000L
+                    setPathMotion(ArcMotion())
+                    interpolator = AnticipateOvershootInterpolator(1.0f)
+                }
+        )
 
     private var _binding: FragmentCarStartBinding? = null
     private val binding get() = _binding!!
@@ -41,7 +53,7 @@ class ConstraintSetFragment : Fragment() {
         toDownAnimation = true
 
         binding.ivCar.setOnClickListener {
-            if(toDownAnimation) moveCarToDown()
+            if (toDownAnimation) moveCarToDown()
             else moveCarToUp()
         }
     }
@@ -50,28 +62,16 @@ class ConstraintSetFragment : Fragment() {
     private fun moveCarToDown() {
         val constraintSet = ConstraintSet()
         constraintSet.clone(requireContext(), R.layout.fragment_car_end)
-
-        TransitionManager.beginDelayedTransition(binding.constraintContainer,
-            ChangeBounds().apply {
-                interpolator = AnticipateOvershootInterpolator(1.0f)
-                duration = ANIMATION_DURATION
-            })
+        TransitionManager.beginDelayedTransition(binding.constraintContainer, transitionSet)
         constraintSet.applyTo(binding.constraintContainer)
-
         toDownAnimation = false
     }
 
     private fun moveCarToUp() {
         val constraintSet = ConstraintSet()
         constraintSet.clone(requireContext(), R.layout.fragment_car_start)
-
-        TransitionManager.beginDelayedTransition(binding.constraintContainer,
-            ChangeBounds().apply {
-                interpolator = AnticipateOvershootInterpolator(1.0f)
-                duration = ANIMATION_DURATION
-            })
+        TransitionManager.beginDelayedTransition(binding.constraintContainer, transitionSet)
         constraintSet.applyTo(binding.constraintContainer)
-
         toDownAnimation = true
     }
 
